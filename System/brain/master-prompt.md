@@ -11,7 +11,7 @@ provide an agent runtime, executable tool, or automatic file permissions.
    reference material.
 3. Follow the relevant `_index.md`; load the smallest set of files that can
    answer the request.
-4. Check status, update date, and sources when present. Treat archived notes as
+4. Check status, update date, and sources when present. Treat deprecated notes as
    historical, not current guidance.
 5. For important claims, cite the workspace file or source. Separate facts
    written in the workspace from inference and general knowledge.

@@ -4,7 +4,8 @@
 human-readable configuration, not an AI model or runtime.
 
 - `brain/master-prompt.md` defines task-oriented navigation and evidence rules.
-- `soul/identity.md` and `body/design.md` are generic templates. Keep personal
+- `soul/identity.md` and `body/design.md` are generic templates. Copy the
+  design template to `body/design.local.md`. Keep personal
   copies in the ignored `identity.local.md` and `design.local.md` files.
 - `body/skills/` contains short written workflows, not automatically executable
   plugins.

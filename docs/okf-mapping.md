@@ -2,7 +2,8 @@
 
 This note compares Atheer's lightweight frontmatter conventions with the
 official [Open Knowledge Format v0.2 specification](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/04624f4fb69caadd7bead187ec467f111f80ad8b/okf/SPEC.md).
-It describes partial overlap only. **Atheer does not claim OKF conformance or
+The spec pinned here is v0.2; newer upstream versions have not been checked.
+It describes field semantics only. **Atheer does not claim OKF conformance or
 compatibility.**
 
 ## OKF v0.2 fields relevant to this comparison
@@ -36,18 +37,20 @@ conformance rules.
 | Atheer convention | Relationship to OKF v0.2 | Difference |
 |---|---|---|
 | `type` | Same field name; OKF also makes it the only always-required field. | Atheer does not claim to implement all OKF consumer/producer requirements. |
-| `status` | Same field name. | Atheer currently allows `draft`, `current`, `review`, `archived`; OKF defines `draft`, `stable`, `deprecated`, with omitted meaning `stable`. Values and lifecycle semantics differ. |
-| `updated` | Both convey freshness-related information. | Atheer uses a date-only `YYYY-MM-DD` for last meaningful review. OKF v0.2 uses `generated.at` for when the concept content was last meaningfully changed, as an ISO 8601 datetime with producer identity in `generated.by`. They are not interchangeable. |
-| `stale_after` | Same field name and absolute-instant stale-on-or-after meaning as OKF. | Atheer documents and validates an ISO 8601 datetime with timezone offset, but its other metadata rules remain Atheer-specific. |
-| `sources` | Same top-level field name and broad provenance purpose. | Atheer's simple list of links/paths is not the OKF structured list of source records. It does not require each source entry's `resource` or model OKF source fields and credibility signals. |
-| `confidence` | No equivalent OKF field. | Atheer uses `verified`, `inferred`, `unknown`, or `synthetic`. OKF does not define this scalar; it derives trust tiers from `generated` and `verified`. `synthetic` labels fictional fixtures in Atheer. |
-| `title` | OKF-recommended field. | Not currently part of Atheer's defined metadata convention. |
-| `description` | OKF-recommended field. | Not currently part of Atheer's defined metadata convention. |
-| `resource` | OKF-recommended canonical URI for an underlying asset. | Not currently part of Atheer's defined metadata convention; Atheer's `sources` should not be substituted for it. |
-| `tags` | OKF-recommended cross-cutting labels. | Not currently part of Atheer's defined metadata convention. |
-| `generated`, `verified`, `usage_window` | Optional OKF provenance/trust fields. | Not currently part of Atheer's defined metadata convention. |
+| `status` | Same field name and semantics. | Allowed values are `draft`, `stable`, `deprecated`; absent means `stable`. |
+| `sources` | Same field name and source record semantics. | Atheer's checker accepts a restricted subset: required `resource`, optional `id` and `title`; other OKF source fields are not implemented. |
+| `stale_after` | Same field name and stale-on-or-after absolute instant semantics. | Requires an ISO 8601 datetime with explicit UTC offset, as required for timestamp-valued OKF keys. |
+| `updated` | Atheer extension; not an OKF field. | Date-only `YYYY-MM-DD` review date. OKF uses `generated.at` for content generation time; they are not interchangeable. |
+| `confidence` | Atheer extension; not an OKF field. | Values are `verified`, `inferred`, `unknown`, or `synthetic`; OKF derives trust tiers from `generated` and `verified`. |
+| `title`, `description`, `resource`, `tags`, `generated`, `verified` | Not defined by Atheer. | OKF recommends the first four and defines the latter two. |
 
-Atheer's fields are optional except where its checker validates a field that is
-present. Its metadata guidance is a small local convention, not an OKF schema.
+Atheer validates its restricted subset when supported metadata is present. Its
+frontmatter remains optional, unlike OKF v0.2 §11, which requires every
+non-reserved `.md` concept to have frontmatter with non-empty `type`. OKF
+reserves `index.md` and `log.md` (allowing `okf_version` only on bundle-root
+`index.md`); Atheer instead uses `_index.md` and `README.md` for navigation and
+allows optional frontmatter. This is another reason Atheer makes no conformance
+claim. The checker parses only the documented restricted YAML subset, not
+general YAML.
 The shared Markdown/YAML representation and a few field names do not establish
 format compatibility.

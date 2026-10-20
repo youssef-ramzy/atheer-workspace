@@ -1,9 +1,10 @@
 ---
 type: reference
-status: current
+status: stable
 updated: "2026-10-01"
 sources:
-  - "synthetic-evaluation-fixture"
+  - resource: synthetic-evaluation-fixture
+    title: Synthetic evaluation fixture
 confidence: synthetic
 ---
 

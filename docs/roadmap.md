@@ -30,7 +30,8 @@ implemented feature or delivery promise.
 3. **Personal working profile:** editable tech stack, tools, skill levels,
    learning goals, and preferred explanation/collaboration style. Treat entries
    as user-maintained context, not inferred truth.
-4. **Design and engineering preferences:** a plain `design.md` for code,
+4. **Design and engineering preferences:** copy the generic `design.md`
+   template to `design.local.md` for code,
    architecture, UI, and communication preferences. Explain how it applies and
    how to override it for an individual task.
 5. **Careful adaptation:** suggest changes based on explicit corrections or

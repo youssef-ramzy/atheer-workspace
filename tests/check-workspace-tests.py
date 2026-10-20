@@ -50,6 +50,18 @@ class CheckWorkspaceTests(unittest.TestCase):
 
             self.assertEqual(CHECKER.check_markdown_links(root), [])
 
+    def test_requires_type_only_when_frontmatter_is_present(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            plain = root / "plain.md"
+            plain.write_text("# Plain note\n", encoding="utf-8")
+            failures, _ = CHECKER.check_metadata(plain, root, NOW)
+            self.assertEqual(failures, [])
+
+            note = write_frontmatter(root, "---\nstatus: stable\n---\n# Note\n")
+            failures, _ = CHECKER.check_metadata(note, root, NOW)
+            self.assertTrue(any("missing type in frontmatter" in item for item in failures))
+
     def test_reports_broken_link_but_ignores_code_example(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -121,7 +133,7 @@ class CheckWorkspaceTests(unittest.TestCase):
             root = Path(directory)
             note = write_frontmatter(
                 root,
-                "---\nstatus: active\n---\n# Note\n",
+                "---\ntype: reference\nstatus: active\n---\n# Note\n",
             )
 
             failures, warnings = CHECKER.check_metadata(note, root, NOW)
@@ -129,12 +141,62 @@ class CheckWorkspaceTests(unittest.TestCase):
         self.assertEqual(warnings, [])
         self.assertTrue(any("invalid status 'active'" in item for item in failures))
 
+    def test_accepts_okf_status_values(self):
+        for status in ("draft", "stable", "deprecated"):
+            with self.subTest(status=status), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                note = write_frontmatter(
+                    root, f"---\ntype: reference\nstatus: {status}\n---\n# Note\n"
+                )
+                failures, _ = CHECKER.check_metadata(note, root, NOW)
+                self.assertEqual(failures, [])
+
+    def test_reports_legacy_status_migration(self):
+        for old, new in (("current", "stable"), ("archived", "deprecated"), ("review", "draft")):
+            with self.subTest(status=old), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                note = write_frontmatter(root, f"---\ntype: reference\nstatus: {old}\n---\n# Note\n")
+                failures, _ = CHECKER.check_metadata(note, root, NOW)
+                self.assertTrue(any(f"status '{old}' is no longer valid; use '{new}'" in item for item in failures))
+
+    def test_accepts_restricted_sources(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            note = write_frontmatter(
+                root,
+                "---\ntype: reference\nsources:\n"
+                "  - resource: https://example.test/reference\n"
+                "    id: ref\n    title: Example\n---\n# Note\n",
+            )
+            failures, _ = CHECKER.check_metadata(note, root, NOW)
+        self.assertEqual(failures, [])
+
+    def test_accepts_empty_sources_list(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            note = write_frontmatter(root, "---\ntype: reference\nsources: []\n---\n# Note\n")
+            failures, _ = CHECKER.check_metadata(note, root, NOW)
+        self.assertEqual(failures, [])
+
+    def test_rejects_invalid_sources_shapes(self):
+        invalid = (
+            "sources:\n  - title: Missing resource\n",
+            "sources:\n  - resource: example\n    author: Unsupported\n",
+            "sources:\n  - resource: example\n    title: First\n    title: Duplicate\n",
+        )
+        for source_block in invalid:
+            with self.subTest(source_block=source_block), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                note = write_frontmatter(root, f"---\ntype: reference\n{source_block}---\n# Note\n")
+                failures, _ = CHECKER.check_metadata(note, root, NOW)
+                self.assertTrue(any("invalid sources" in item for item in failures))
+
     def test_rejects_invalid_updated_date(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             note = write_frontmatter(
                 root,
-                '---\nupdated: "2026-02-30"\n---\n# Note\n',
+                '---\ntype: reference\nupdated: "2026-02-30"\n---\n# Note\n',
             )
 
             failures, _ = CHECKER.check_metadata(note, root, NOW)
@@ -146,7 +208,7 @@ class CheckWorkspaceTests(unittest.TestCase):
             root = Path(directory)
             note = write_frontmatter(
                 root,
-                "---\nconfidence: synthetic\n---\n# Example\n",
+                "---\ntype: example\nconfidence: synthetic\n---\n# Example\n",
             )
 
             failures, _ = CHECKER.check_metadata(note, root, NOW)
@@ -158,7 +220,7 @@ class CheckWorkspaceTests(unittest.TestCase):
             root = Path(directory)
             note = write_frontmatter(
                 root,
-                "---\nupdated: 2026-04-21\n---\n# Note\n",
+                "---\ntype: reference\nupdated: 2026-04-21\n---\n# Note\n",
             )
 
             failures, warnings = CHECKER.check_metadata(note, root, NOW)
@@ -173,6 +235,7 @@ class CheckWorkspaceTests(unittest.TestCase):
             note = write_frontmatter(
                 root,
                 "---\n"
+                "type: reference\n"
                 "updated: 2025-01-01\n"
                 "stale_after: 2026-12-01T00:00:00Z\n"
                 "---\n# Note\n",
@@ -188,7 +251,7 @@ class CheckWorkspaceTests(unittest.TestCase):
             root = Path(directory)
             note = write_frontmatter(
                 root,
-                "---\nstale_after: 2026-10-19T00:00:00Z\n---\n# Note\n",
+                "---\ntype: reference\nstale_after: 2026-10-19T00:00:00Z\n---\n# Note\n",
             )
 
             failures, warnings = CHECKER.check_metadata(note, root, NOW)
@@ -202,7 +265,7 @@ class CheckWorkspaceTests(unittest.TestCase):
             root = Path(directory)
             note = write_frontmatter(
                 root,
-                "---\nstale_after: 2026-12-01T00:00:00\n---\n# Note\n",
+                "---\ntype: reference\nstale_after: 2026-12-01T00:00:00\n---\n# Note\n",
             )
 
             failures, _ = CHECKER.check_metadata(note, root, NOW)

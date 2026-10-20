@@ -41,7 +41,12 @@ REQUIRED_FILES = (
     "docs/release-checklist.md",
     "evals/retrieval-scenarios.md",
 )
-STATUS_VALUES = {"draft", "current", "review", "archived"}
+STATUS_VALUES = {"draft", "stable", "deprecated"}
+LEGACY_STATUS_VALUES = {
+    "current": "stable",
+    "archived": "deprecated",
+    "review": "draft",
+}
 CONFIDENCE_VALUES = {"verified", "inferred", "unknown", "synthetic"}
 STALE_DAYS = 180
 LOCAL_SUFFIX = ".local.md"
@@ -232,17 +237,104 @@ def frontmatter_fields(
     if closing is None:
         return {}, [f"unclosed YAML frontmatter: {relative_path}:1"]
 
-    fields: dict[str, tuple[str, int]] = {}
-    for index, line in enumerate(lines[1:closing], 2):
+    fields: dict[str, tuple[str, int]] = {"__frontmatter__": ("", 1)}
+    failures: list[str] = []
+    index = 1
+    while index < closing:
+        line = lines[index]
         match = FRONTMATTER_FIELD.match(line)
-        if match:
-            value = match.group(2).strip()
+        if not match:
+            failures.append(
+                f"unsupported frontmatter syntax at {relative_path}:{index + 1}"
+            )
+            index += 1
+            continue
+        key = match.group(1)
+        value = match.group(2).strip()
+        line_number = index + 1
+        if key == "sources":
+            if value == "[]":
+                fields[key] = ("[]", line_number)
+            elif value == "":
+                records, next_index, source_failures = parse_sources(
+                    lines, index + 1, closing, relative_path
+                )
+                failures.extend(source_failures)
+                fields[key] = ("records" if records else "invalid", line_number)
+                index = next_index
+                continue
+            else:
+                failures.append(
+                    f"invalid sources at {relative_path}:{line_number} "
+                    "(expected [] or restricted source records)"
+                )
+                fields[key] = ("invalid", line_number)
+        else:
             if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
                 value = value[1:-1]
             elif " #" in value:
                 value = value.split(" #", 1)[0].rstrip()
-            fields[match.group(1)] = (value, index)
-    return fields, []
+            fields[key] = (value, line_number)
+        index += 1
+    return fields, failures
+
+
+def parse_yaml_scalar(value: str) -> str:
+    value = value.strip()
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+        return value[1:-1]
+    return value
+
+
+def parse_sources(
+    lines: list[str], start: int, closing: int, relative_path: str
+) -> tuple[int, int, list[str]]:
+    """Read only resource-first source records with optional id/title scalars."""
+    failures: list[str] = []
+    records = 0
+    index = start
+    while index < closing:
+        line = lines[index]
+        if not line.strip():
+            index += 1
+            continue
+        if not line.startswith("  - "):
+            break
+        line_number = index + 1
+        first = re.fullmatch(r"  - resource:\s*(.*?)\s*", line)
+        if not first or not parse_yaml_scalar(first.group(1)):
+            failures.append(
+                f"invalid sources record at {relative_path}:{line_number} "
+                "(resource is required and must be first)"
+            )
+            index += 1
+            continue
+        records += 1
+        seen: set[str] = {"resource"}
+        index += 1
+        while index < closing and lines[index].startswith("    "):
+            child = re.fullmatch(r"    (id|title):\s*(.*?)\s*", lines[index])
+            child_line = index + 1
+            if not child or child.group(1) in seen or not parse_yaml_scalar(child.group(2)):
+                failures.append(
+                    f"invalid sources field at {relative_path}:{child_line} "
+                    "(only non-empty id and title scalars are supported)"
+                )
+            else:
+                seen.add(child.group(1))
+            index += 1
+        if index < closing and lines[index].strip() and not lines[index].startswith("  - "):
+            if lines[index].startswith(" "):
+                failures.append(
+                    f"invalid sources indentation at {relative_path}:{index + 1}"
+                )
+                index += 1
+    if records == 0 and not failures:
+        failures.append(
+            f"invalid sources at {relative_path}:{start} "
+            "(expected [] or restricted source records)"
+        )
+    return records, index, failures
 
 
 def parse_stale_after(value: str) -> datetime:
@@ -262,12 +354,28 @@ def check_metadata(
     if failures:
         return failures, warnings
 
+    type_value = fields.get("type")
+    if "__frontmatter__" in fields and type_value is None:
+        failures.append(
+            f"missing type in frontmatter: {relative_path} (type is required when frontmatter is present)"
+        )
+    elif type_value is not None and not type_value[0].strip():
+        failures.append(
+            f"empty type at {relative_path}:{type_value[1]} (expected a non-empty value)"
+        )
+
     status = fields.get("status")
     if status and status[0] not in STATUS_VALUES:
-        failures.append(
-            f"invalid status {status[0]!r} at {relative_path}:{status[1]} "
-            f"(expected one of {', '.join(sorted(STATUS_VALUES))})"
-        )
+        if status[0] in LEGACY_STATUS_VALUES:
+            failures.append(
+                f"status {status[0]!r} is no longer valid; use "
+                f"{LEGACY_STATUS_VALUES[status[0]]!r} at {relative_path}:{status[1]}"
+            )
+        else:
+            failures.append(
+                f"invalid status {status[0]!r} at {relative_path}:{status[1]} "
+                f"(expected one of {', '.join(sorted(STATUS_VALUES))})"
+            )
 
     confidence = fields.get("confidence")
     if confidence and confidence[0] not in CONFIDENCE_VALUES:

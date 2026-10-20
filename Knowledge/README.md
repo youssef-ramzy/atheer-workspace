@@ -6,7 +6,7 @@ automatic search index.
 - Add source-aware reference notes when a durable fact will be useful again.
 - Keep the source, review date, and status visible when freshness matters.
 - Load references on demand; do not assume the agent reads every file here.
-- Mark obsolete material as archived so it is not confused with current
+- Mark obsolete material as deprecated so it is not confused with current
   guidance.
 - Do not store material that should not be exposed to the selected AI agent.
 
