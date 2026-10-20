@@ -8,7 +8,7 @@ runtime, or security boundary.
 
 1. Read this entry file, then use `_index.md` files to locate relevant context.
 2. Load only files relevant to the request. Do not scan all of `Profile/` or
-   `Database/` by default.
+   `Knowledge/` by default.
 3. Treat `System/body/skills/` as written procedures. Follow one only when
    relevant; do not assume it is a plugin, slash command, or executable tool.
 4. When present, use `Profile/developer-profile.md`,

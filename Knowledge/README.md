@@ -1,7 +1,7 @@
-# Database — References and Archive
+# Knowledge — References and Archive
 
-`Database/` is a place for reference notes and archived material, not a database
-engine or automatic search index.
+`Knowledge/` is a place for reference notes and archived material, not an
+automatic search index.
 
 - Add source-aware reference notes when a durable fact will be useful again.
 - Keep the source, review date, and status visible when freshness matters.

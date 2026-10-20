@@ -30,14 +30,14 @@ from reading files. See [the privacy guide](docs/privacy-and-safe-use.md).
 
 ```text
 System/    How the AI should navigate and work; preferences and workflows
-Database/  Reference knowledge and archives, loaded when relevant
+Knowledge/ Reference knowledge and archives, loaded when relevant
 Profile/   The person's work, study, tools, skills, and goals
 ```
 
 - **System** is the guidance layer: concise entry instructions, optional
   identity and design preferences, workflows, and scripts.
-- **Database** keeps source-aware reference material. It is not a database
-  engine or automatic search index.
+- **Knowledge** keeps source-aware reference material. It is not an automatic
+  search index.
 - **Profile** describes the person's work and study context. Keep personal
   copies private and expose only appropriate details to the chosen agent.
 

@@ -11,7 +11,7 @@ from urllib.parse import unquote
 
 
 ROOT = Path(__file__).resolve().parents[3]
-REQUIRED_DIRECTORIES = ("System", "Database", "Profile")
+REQUIRED_DIRECTORIES = ("System", "Knowledge", "Profile")
 REQUIRED_FILES = (
     "AGENTS.md",
     "README.md",
@@ -23,8 +23,8 @@ REQUIRED_FILES = (
     "System/body/design.md",
     "System/body/skills/README.md",
     "System/body/scripts/README.md",
-    "Database/README.md",
-    "Database/_index.md",
+    "Knowledge/README.md",
+    "Knowledge/_index.md",
     "Profile/README.md",
     "Profile/_index.md",
     "Profile/templates/developer-profile.md",

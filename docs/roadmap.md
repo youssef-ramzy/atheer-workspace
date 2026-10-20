@@ -7,7 +7,7 @@ implemented feature or delivery promise.
 
 ## Foundation in this starter
 
-- Three-area structure: `System/`, `Database/`, and `Profile/`.
+- Three-area structure: `System/`, `Knowledge/`, and `Profile/`.
 - Cross-agent entry guidance for file-capable agents and IDEs, with host
   limitations stated explicitly.
 - Lightweight indexes, optional metadata, source/freshness guidance, and a
