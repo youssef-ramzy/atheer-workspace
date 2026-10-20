@@ -14,7 +14,8 @@ implemented feature or delivery promise.
   deliberate retrieval procedure.
 - Generic profile and design-preference templates; no real personal data.
 - Short example workflows, evaluation scenarios, and a read-only structural
-  and link checker.
+  checker for supported links and metadata, ignored files, tracked local
+  overrides, and stale notes.
 - Privacy and provider-boundary guidance.
 
 ## Later, only after the foundation is tested
@@ -38,9 +39,9 @@ implemented feature or delivery promise.
 6. **Repeated-task helpers:** add scripts only for demonstrated repetitive
    tasks. Keep them local and narrow, document inputs/outputs, preview
    destructive changes, avoid network access by default, and test edge cases.
-7. **Workspace maintenance:** offer checks for broken links, stale indexes,
-   invalid metadata, and accidental sensitive files. Report findings; do not
-   auto-delete, auto-archive, or claim that a clean scan proves safety.
+7. **Workspace maintenance:** extend checks for stale indexes and other
+   metadata issues. Report findings; do not auto-delete, auto-archive, or claim
+   that a clean scan proves safety.
 8. **Host guidance:** document verified setup for specific agents/editors as
    separate adapters. Keep a portable Markdown baseline and do not claim
    universal compatibility.

@@ -2,7 +2,9 @@
 
 Atheer uses ordinary Markdown so people can edit files in a text editor or IDE
 and file-capable agents can read them. Keep prose concise, use descriptive
-lowercase kebab-case names, and link related material. Metadata is optional
+lowercase kebab-case names for files and subfolders inside the three top-level
+pillars. The pillar names `System/`, `Knowledge/`, and `Profile/` are
+intentional capitalized exceptions. Link related material. Metadata is optional
 unless a local workflow says otherwise.
 
 ## Optional YAML frontmatter
@@ -14,6 +16,7 @@ For notes where source, freshness, or lifecycle matters, use a small header:
 type: reference
 status: current
 updated: "YYYY-MM-DD"
+stale_after: "YYYY-MM-DDTHH:MM:SSZ"
 sources: []
 confidence: unknown
 ---
@@ -23,17 +26,25 @@ Recommended fields:
 
 - `type`: broad kind of file, such as `project`, `study-plan`, `reference`, or
   `decision`.
-- `status`: `draft`, `current`, `review`, or `archived`. Define local values
-  consistently if you extend this set.
+- `status`: `draft`, `current`, `review`, or `archived`. The checker validates
+  these Atheer values; they are not the OKF lifecycle values.
 - `updated`: date of the latest meaningful content review, not an automatic
-  modification timestamp.
-- `sources`: links or paths that support the content. Use an empty list when
-  no external source is relevant.
-- `confidence`: evidence quality such as `verified`, `inferred`, or `unknown`.
-  Explain uncertainty in the body when it matters.
+  modification timestamp. Use a valid `YYYY-MM-DD` date. In profile templates,
+  the literal placeholder `YYYY-MM-DD` is allowed.
+- `stale_after`: optional absolute ISO 8601 datetime with a timezone offset.
+  The checker warns when the current time is at or after this instant. If
+  omitted, it warns when `updated` is at least 180 days old.
+- `sources`: optional list of links or paths that support the content. This
+  simple Atheer convention is not the structured OKF v0.2 `sources` schema.
+- `confidence`: `verified`, `inferred`, `unknown`, or `synthetic`. Use
+  `synthetic` for intentionally fictional examples; it is an Atheer extension,
+  not an OKF trust field. Explain important uncertainty in the body.
 
 Do not add frontmatter to every file just to satisfy a schema. If a field is
 unknown, say so; never fabricate sources, dates, or confidence.
+
+Atheer's fields are not claimed to conform to OKF. See
+[the OKF v0.2 mapping](okf-mapping.md) for exact overlap and differences.
 
 ## Durable knowledge and activity
 

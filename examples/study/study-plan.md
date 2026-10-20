@@ -4,7 +4,7 @@ status: current
 updated: "2026-10-01"
 sources:
   - "synthetic-evaluation-fixture"
-confidence: verified
+confidence: synthetic
 ---
 
 # Fictional Frontend Study Plan
