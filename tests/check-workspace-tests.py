@@ -128,6 +128,25 @@ class CheckWorkspaceTests(unittest.TestCase):
 
         self.assertEqual(failures, [])
 
+    def test_non_git_directory_skips_local_files_and_continues(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            local = root / "identity.local.md"
+            local.write_text("[broken](missing-local.md)\n", encoding="utf-8")
+            ordinary = root / "ordinary.md"
+            ordinary.write_text("[broken](missing.md)\n", encoding="utf-8")
+
+            self.assertFalse(CHECKER.has_git_repository(root))
+            files, failures = CHECKER.discover_markdown_files(root)
+            link_failures = CHECKER.check_markdown_links(root)
+            workspace_failures, _ = CHECKER.check_workspace(root)
+
+        self.assertEqual(failures, [])
+        self.assertEqual([path.name for path in files], ["ordinary.md"])
+        self.assertEqual(len(link_failures), 1)
+        self.assertTrue(any("missing directory: System" in item for item in workspace_failures))
+        self.assertFalse(any("Git" in item or "tracked" in item for item in workspace_failures))
+
     def test_rejects_unknown_status(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

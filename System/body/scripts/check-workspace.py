@@ -59,15 +59,23 @@ ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 def git_output(root: Path, args: list[str]) -> tuple[bytes | None, str | None]:
-    result = subprocess.run(
-        ["git", "-C", str(root), *args],
-        capture_output=True,
-        check=False,
-    )
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), *args],
+            capture_output=True,
+            check=False,
+        )
+    except OSError as error:
+        return None, str(error)
     if result.returncode != 0:
         detail = result.stderr.decode("utf-8", errors="replace").strip()
         return None, detail or f"git exited with status {result.returncode}"
     return result.stdout, None
+
+
+def has_git_repository(root: Path) -> bool:
+    output, error = git_output(root, ["rev-parse", "--is-inside-work-tree"])
+    return error is None and output is not None and output.strip() == b"true"
 
 
 def tracked_paths(root: Path) -> tuple[set[str], list[str]]:
@@ -78,7 +86,9 @@ def tracked_paths(root: Path) -> tuple[set[str], list[str]]:
     return paths, []
 
 
-def check_tracked_local_files(root: Path) -> list[str]:
+def check_tracked_local_files(root: Path, use_git: bool = True) -> list[str]:
+    if not use_git:
+        return []
     paths, failures = tracked_paths(root)
     failures.extend(
         f"tracked local override file: {path}"
@@ -102,7 +112,11 @@ def check_required_paths(root: Path) -> list[str]:
     return failures
 
 
-def is_git_ignored(root: Path, relative_path: str) -> tuple[bool, str | None]:
+def is_git_ignored(
+    root: Path, relative_path: str, use_git: bool = True
+) -> tuple[bool, str | None]:
+    if not use_git:
+        return False, None
     result = subprocess.run(
         ["git", "-C", str(root), "check-ignore", "--quiet", "--", relative_path],
         capture_output=True,
@@ -116,8 +130,12 @@ def is_git_ignored(root: Path, relative_path: str) -> tuple[bool, str | None]:
     return False, detail or f"git check-ignore exited with status {result.returncode}"
 
 
-def discover_markdown_files(root: Path) -> tuple[list[Path], list[str]]:
+def discover_markdown_files(
+    root: Path, use_git: bool | None = None
+) -> tuple[list[Path], list[str]]:
     root = root.resolve()
+    if use_git is None:
+        use_git = has_git_repository(root)
     files: list[Path] = []
     failures: list[str] = []
 
@@ -134,7 +152,7 @@ def discover_markdown_files(root: Path) -> tuple[list[Path], list[str]]:
             relative = child.relative_to(root).as_posix()
             if name in SKIP_DIRECTORIES or name.endswith(LOCAL_SUFFIX) or child.is_symlink():
                 continue
-            ignored, error = is_git_ignored(root, relative)
+            ignored, error = is_git_ignored(root, relative, use_git)
             if error:
                 failures.append(f"could not check Git ignore status for {relative}: {error}")
             elif not ignored:
@@ -146,7 +164,7 @@ def discover_markdown_files(root: Path) -> tuple[list[Path], list[str]]:
             if not name.lower().endswith(".md") or name.endswith(LOCAL_SUFFIX) or path.is_symlink():
                 continue
             relative = path.relative_to(root).as_posix()
-            ignored, error = is_git_ignored(root, relative)
+            ignored, error = is_git_ignored(root, relative, use_git)
             if error:
                 failures.append(f"could not check Git ignore status for {relative}: {error}")
             elif not ignored:
@@ -429,13 +447,16 @@ def check_metadata(
 
 
 def check_workspace(
-    root: Path, now: datetime | None = None
+    root: Path, now: datetime | None = None, use_git: bool | None = None
 ) -> tuple[list[str], list[str]]:
     root = root.resolve()
+    if use_git is None:
+        use_git = has_git_repository(root)
     current_time = now or datetime.now(timezone.utc)
     failures = check_required_paths(root)
-    failures.extend(check_tracked_local_files(root))
-    files, scan_failures = discover_markdown_files(root)
+    if use_git:
+        failures.extend(check_tracked_local_files(root))
+    files, scan_failures = discover_markdown_files(root, use_git)
     failures.extend(scan_failures)
     warnings: list[str] = []
 
@@ -452,7 +473,10 @@ def check_workspace(
 
 
 def main() -> int:
-    failures, warnings = check_workspace(ROOT)
+    use_git = has_git_repository(ROOT)
+    if not use_git:
+        print("NOTICE: no Git repository detected; skipping Git tracking and ignore checks.")
+    failures, warnings = check_workspace(ROOT, use_git=use_git)
     for warning in warnings:
         print(f"WARNING: {warning}")
     if failures:
@@ -461,7 +485,10 @@ def main() -> int:
             print(f"  {failure}", file=sys.stderr)
         return 1
 
-    print("Atheer Workspace check passed: structure, metadata, Git ignores, and links.")
+    if use_git:
+        print("Atheer Workspace check passed: structure, metadata, Git ignores, and links.")
+    else:
+        print("Atheer Workspace check passed: structure, metadata, and links.")
     return 0
 
 

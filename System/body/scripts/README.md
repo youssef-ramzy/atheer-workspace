@@ -10,7 +10,7 @@ because they are present in this folder.
   restricted frontmatter YAML subset,
   stale dates, tracked `*.local.md` files, Git-ignored content, and supported
   relative Markdown links. It is read-only, uses Python's standard library,
-  and makes no network calls. Run it inside a Git working tree.
+  and makes no network calls. It runs with or without a Git working tree.
 
 Run from the workspace root:
 
@@ -18,8 +18,10 @@ Run from the workspace root:
 python3 System/body/scripts/check-workspace.py
 ```
 
-The checker skips `*.local.md` and Git-ignored paths while scanning, but fails
-if a `*.local.md` file is tracked. It does not parse or validate general YAML syntax,
+When Git is available, the checker skips `*.local.md` and Git-ignored paths
+while scanning, but fails if a `*.local.md` file is tracked. Outside a Git
+repository (such as an extracted archive), it prints a notice, skips Git-based
+checks, and skips `*.local.md` by name. It does not parse or validate general YAML syntax,
 privacy, secret absence, content accuracy, or agent compatibility. A clean
 result is not a security guarantee. Stale findings are warnings and do not
 fail the check.
