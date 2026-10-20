@@ -1,0 +1,46 @@
+# Credentials and environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+secrets.*
+credentials.*
+
+# Personal or confidential content
+**/private/
+**/confidential/
+**/*-private.*
+**/*-confidential.*
+client-data/
+
+# User-local personalization and work/study notes
+/Profile/developer-profile.md
+/Profile/work/*
+!/Profile/work/README.md
+!/Profile/work/_index.md
+/Profile/study/*
+!/Profile/study/README.md
+!/Profile/study/_index.md
+/System/soul/identity.local.md
+/System/body/design.local.md
+
+# Editor, OS, and generated files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+dist/
+build/
+*.log
+*.tmp
+*.bak
