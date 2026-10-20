@@ -3,6 +3,8 @@
 **A file-first work-and-study workspace that helps developers bring their own
 context and working preferences to AI-assisted work.**
 
+Status: v0.1, early foundation.
+
 Atheer organizes readable Markdown files so a file-capable AI agent in an IDE
 can consult relevant project, learning, and preference notes when you ask.
 
@@ -13,16 +15,27 @@ atheer-workspace/
 ├── Profile/      Developer work and study context
 ├── examples/     Fictional data for retrieval exercises
 ├── docs/         Conventions, privacy, retrieval, and roadmap
-└── evals/        Manual retrieval scenarios
+├── evals/        Manual retrieval scenarios
+└── tests/        Standard-library checker tests
 ```
 
-**Before:** “Help me plan what to study next.” The agent may have no context
-about your current learning goal or preferred way to work.
+**Illustrative example only; these are not measured results.**
 
-**With Atheer:** If you choose to add a study goal and preferences to your
-workspace, you can direct the agent to read those relevant files first. It can
-then base its suggestions on that context instead of guessing. The result
-depends on the files you provide and the agent/IDE's actual behavior.
+Fictional `Profile/developer-profile.md`:
+
+```text
+Role: junior Python developer
+Goal: build reliable APIs
+Current: comfortable with Python basics
+Next project: small Flask service
+Learning time: 4 hours each week
+```
+
+**Question:** “Help me plan what to study next”
+
+| Generic answer | Grounded in the profile |
+|---|---|
+| Study a programming topic that interests you. | Study HTTP and REST basics, then build a small Flask API. Set aside one hour each week for focused practice. |
 
 ## What Atheer is—and is not
 
@@ -100,9 +113,11 @@ personal wikis, but it does not implement a search or indexing service. See
 
 Use the templates under `Profile/templates/` for optional, non-sensitive
 context such as role, goals, technologies, self-described skill areas, and
-collaboration preferences. Use `System/body/design.md` for engineering and
-design preferences. These are editable user guidance, not permanent facts or
-instructions every agent will automatically obey.
+collaboration preferences. Use `System/body/design.local.md` for engineering
+and design preferences. The tracked [design.md](System/body/design.md) is a
+generic template; copy it to `design.local.md` before customizing. These are
+editable user guidance, not permanent facts or instructions every agent will
+automatically obey.
 
 An automated first-run interview, personal `start` / `go-offline` commands,
 adaptive memory, agent-specific integrations, and automatic script generation
@@ -118,5 +133,6 @@ It does not scan secrets or prove that the workspace is safe.
 
 Before a public release, review the complete staged file list, run the checks,
 and inspect all content yourself. Use
-[the release checklist](docs/release-checklist.md). Choose and add a license;
-the included MIT license is the terms under which this starter is distributed.
+[the release checklist](docs/release-checklist.md).
+
+This starter is distributed under the MIT license (see [LICENSE](LICENSE)).
