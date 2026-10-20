@@ -1,15 +1,40 @@
 # Atheer Workspace
 
-Atheer is a customizable work-and-study workspace for developers and engineers
-who use AI agents in their work and learning. It organizes human-readable
-context, instructions, and reusable procedures so a file-capable AI agent can
-help in a way that better fits the person's goals and workflow.
+**A file-first work-and-study workspace that helps developers bring their own
+context and working preferences to AI-assisted work.**
 
-Atheer is a folder-and-file system, not an AI model, RAG service, agent
-runtime, IDE plugin, or security product. It is designed to be usable from
-different agents and IDEs that can read and, with permission, edit workspace
-files. Instruction loading, file access, scripts, and integrations vary by
-host and must be checked rather than assumed.
+Atheer organizes readable Markdown files so a file-capable AI agent in an IDE
+can consult relevant project, learning, and preference notes when you ask.
+
+```text
+atheer-workspace/
+├── System/       Agent guidance, preferences, workflows, and helper scripts
+├── Knowledge/    Reference notes and archived material
+├── Profile/      Developer work and study context
+├── examples/     Fictional data for retrieval exercises
+├── docs/         Conventions, privacy, retrieval, and roadmap
+└── evals/        Manual retrieval scenarios
+```
+
+**Before:** “Help me plan what to study next.” The agent may have no context
+about your current learning goal or preferred way to work.
+
+**With Atheer:** If you choose to add a study goal and preferences to your
+workspace, you can direct the agent to read those relevant files first. It can
+then base its suggestions on that context instead of guessing. The result
+depends on the files you provide and the agent/IDE's actual behavior.
+
+## What Atheer is—and is not
+
+Atheer is a customizable folder-and-file workspace for developers and
+engineers using AI agents for work and study. It is not an AI model, RAG
+service, agent runtime, IDE plugin, or security product. It does not implement
+semantic search or automatically make an agent read or obey these files.
+
+Atheer is designed to be adaptable to file-capable agents and IDEs. Instruction
+discovery, file access, edits, scripts, and integrations vary by host; verify
+the behavior of your specific tool. Reading requires file-read access, and
+creating or editing files requires corresponding permissions.
 
 ## Privacy first
 
@@ -18,114 +43,80 @@ provider.** Whether content leaves the device, how it is retained, and whether
 it is used for training depend on the specific agent, provider, account,
 settings, and tools. A local folder does not imply local-only AI processing.
 
-Never place credentials, tokens, confidential employer/client material,
+Do not put credentials, tokens, confidential employer/client material,
 identity or financial records, or other sensitive information in an
 AI-accessible workspace unless you have verified that use is allowed and
 appropriate. Share the minimum needed, prefer redacted or summarized examples,
 check provider and organizational policies, and limit agent permissions.
-`.gitignore` can help prevent accidental Git tracking; it cannot stop an agent
-from reading files. See [the privacy guide](docs/privacy-and-safe-use.md).
+`.gitignore` helps avoid accidental Git tracking; it cannot stop an agent from
+reading files. See [the privacy guide](docs/privacy-and-safe-use.md).
 
 ## The three areas
 
-```text
-System/    How the AI should navigate and work; preferences and workflows
-Knowledge/ Reference knowledge and archives, loaded when relevant
-Profile/   The person's work, study, tools, skills, and goals
-```
-
-- **System** is the guidance layer: concise entry instructions, optional
-  identity and design preferences, workflows, and scripts.
-- **Knowledge** keeps source-aware reference material. It is not an automatic
-  search index.
-- **Profile** describes the person's work and study context. Keep personal
-  copies private and expose only appropriate details to the chosen agent.
+- **System** explains how the agent should navigate and work. It includes
+  optional user preferences, Markdown workflows, and helper scripts.
+- **Knowledge** holds references that can be opened when relevant. It is not a
+  database engine or automatic search index.
+- **Profile** organizes the person's work, study, tools, skills, and goals.
+  Add only context you choose to expose to your AI tool.
 
 Start at [AGENTS.md](AGENTS.md), then follow the relevant
-[_index.md](./_index.md) navigation. Read the [System guide](System/README.md)
-to understand the instruction and workflow layers.
+[_index.md](./_index.md) navigation. See the
+[System guide](System/README.md) for how its files fit together.
 
 ## Quick start
 
-1. Copy or fork this starter to a workspace you control.
+1. Copy or fork this starter into a workspace you control.
 2. Read [AGENTS.md](AGENTS.md) and the [privacy guide](docs/privacy-and-safe-use.md).
 3. For local personalization, copy the generic templates to
    `System/soul/identity.local.md`, `System/body/design.local.md`, and
-   `Profile/developer-profile.md`, then customize those local copies. The
-   included `.gitignore` excludes these files and new work/study notes from Git
-   by default; it does not prevent agent access or guarantee privacy.
+   `Profile/developer-profile.md`, then customize those copies. `.gitignore`
+   excludes these files and new work/study notes from Git by default, but does
+   not prevent agent access or guarantee privacy.
 4. Open the folder in an agent/IDE that can access workspace files. If it does
    not load instructions automatically, ask it to read `AGENTS.md` and follow
-   the relevant index before acting.
-5. Try a retrieval scenario in [evals/retrieval-scenarios.md](evals/retrieval-scenarios.md).
-6. Run the local structure and link check:
+   relevant indexes before acting.
+5. Try a scenario in [evals/retrieval-scenarios.md](evals/retrieval-scenarios.md).
+6. Run the local structure, metadata, and link check:
 
    ```bash
    python3 System/body/scripts/check-workspace.py
    ```
+
 7. Run the checker tests:
 
    ```bash
    python3 tests/check-workspace-tests.py
    ```
 
-The included scenarios show intended behavior; they do not prove compatibility
-with every agent. Check how your particular host handles instructions, file
-permissions, and tool access. Reading context requires file-read access;
-creating, editing, or deleting files requires corresponding host permissions.
-Use version control or another backup/review process for changes.
+## Retrieval, metadata, and personalization
 
-## How the workspace helps an agent
-
-Atheer uses deliberate, lightweight retrieval rather than requiring a vector
-database:
-
-1. Start from concise workspace instructions.
-2. Follow indexes to the area relevant to the task.
-3. Open only the needed work, study, or reference files.
-4. Use source and status metadata to distinguish current material from drafts,
-   assumptions, and archived notes.
-5. Ground important answers in the files read, and state when evidence is
-   missing or stale.
-
-This is inspired by useful RAG and wiki principles—retrieval, links, sources,
-and freshness—without claiming automated semantic search. See
+Atheer uses human-readable indexes and source notes to guide deliberate
+retrieval: start from the task, follow the relevant index, read only needed
+files, and identify evidence or uncertainty. This borrows ideas from RAG and
+personal wikis, but it does not implement a search or indexing service. See
 [retrieval and evidence](docs/retrieval-and-evidence.md) and
 [file conventions](docs/file-conventions.md).
 
-## Personalization and customization
+Use the templates under `Profile/templates/` for optional, non-sensitive
+context such as role, goals, technologies, self-described skill areas, and
+collaboration preferences. Use `System/body/design.md` for engineering and
+design preferences. These are editable user guidance, not permanent facts or
+instructions every agent will automatically obey.
 
-Use the templates under `Profile/templates/` to record only useful,
-non-sensitive context such as role, learning goals, technologies, skill areas,
-and preferred collaboration style. Keep personal copies at the local paths
-above; keep the generic templates unchanged in a public repo. Use
-`System/body/design.local.md` for coding, architecture, and visual-design
-preferences. These are editable guidance, not permanent facts or instructions
-an agent will automatically obey.
+An automated first-run interview, personal `start` / `go-offline` commands,
+adaptive memory, agent-specific integrations, and automatic script generation
+are **not implemented**. They are future possibilities described in
+[the roadmap](docs/roadmap.md).
 
-This foundation does **not** yet include an automated first-run interview,
-personal `start` / `go-offline` commands, adaptive memory, agent-specific
-integrations, or automatic script generation. Those are future possibilities
-with explicit consent and safety criteria in [the roadmap](docs/roadmap.md).
+## Scripts and release readiness
 
-## Scripts and safety
+The included standard-library Python checker reads relevant non-ignored
+Markdown files and reports missing essentials, invalid supported metadata,
+stale notes, tracked local override files, and broken supported local links.
+It does not scan secrets or prove that the workspace is safe.
 
-The foundation includes one standard-library Python checker. It only reads
-workspace paths and reports missing essentials or broken local Markdown
-links; it does not modify files or contact a network. It is not a secret
-scanner or a security guarantee.
-
-Every future automation should have a narrow scope, clear inputs and outputs,
-and safe defaults. Preview changes before applying them; do not silently delete,
-publish, upload, or commit user data.
-
-## Before publishing a public copy
-
-- Inspect every file and the staged Git file list; do not rely on ignore rules.
-- Run the included check, an appropriate secret scan, and a human review.
-- Keep examples fictional or clearly redacted.
-- Choose and add a license intentionally.
-- Do not claim universal compatibility, guaranteed privacy, or automatic
-  execution of workflows.
-- Use [the Claude review plan](claude-review-plan.md) for a read-only review
-  restricted to this starter folder.
+Before a public release, review the complete staged file list, run the checks,
+and inspect all content yourself. Use
+[the release checklist](docs/release-checklist.md). Choose and add a license;
+the included MIT license is the terms under which this starter is distributed.

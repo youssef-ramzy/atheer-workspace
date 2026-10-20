@@ -7,8 +7,8 @@ file-capable AI agents and IDEs.
 - [System/](System/_index.md) — working guidance, preferences, workflows, scripts
 - [Knowledge/](Knowledge/_index.md) — reference knowledge and archive
 - [Profile/](Profile/_index.md) — work and study context
-- [docs/](docs/) — file format, retrieval, privacy, and roadmap
+- [docs/](docs/) — conventions, OKF comparison, retrieval, privacy, and roadmap
 - [templates/](Profile/templates/) — safe starter templates
 - [examples/](examples/_index.md) — fictional retrieval fixtures
 - [evals/](evals/retrieval-scenarios.md) — manual retrieval scenarios
-- [Claude review plan](claude-review-plan.md) — pre-release review
+- [Release checklist](docs/release-checklist.md) — pre-release review
