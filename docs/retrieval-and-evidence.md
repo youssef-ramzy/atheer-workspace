@@ -11,7 +11,7 @@ embeddings, semantic search, a vector store, or automated retrieval.
 2. Identify the task domain: work, study, System guidance, or reference.
 3. Follow that area's `_index.md` and open only likely relevant files.
 4. Check `status`, `updated`, and source notes when present. Do not rely on
-   archived, draft, or stale content as current without verification.
+   deprecated, draft, or stale content as current without verification.
 5. For significant factual claims, point to the file or source that supports
    the answer. Separate source-backed facts from assumptions.
 6. If context conflicts or evidence is missing, say so and ask for clarification
