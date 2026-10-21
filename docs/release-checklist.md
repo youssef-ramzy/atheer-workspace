@@ -27,7 +27,7 @@ human-review aid, not a security certification.
 
 ## Prepare repository metadata
 
-- Add the license chosen by the owner and verify that it matches their intent.
+- Verify that the included LICENSE file matches the owner's intent.
 - Set a concise repository description and relevant topics in the hosting UI.
 - Create a release only after the owner confirms the contents, version, and
   release notes.
