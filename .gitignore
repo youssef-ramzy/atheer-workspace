@@ -27,8 +27,33 @@ client-data/
 /Profile/study/*
 !/Profile/study/README.md
 !/Profile/study/_index.md
+/Profile/identity/*
+!/Profile/identity/README.md
+!/Profile/identity/_index.md
+/Profile/goals/*
+!/Profile/goals/README.md
+!/Profile/goals/_index.md
+/Profile/life/*
+!/Profile/life/README.md
+!/Profile/life/_index.md
+/Profile/finance/*
+!/Profile/finance/README.md
+!/Profile/finance/_index.md
 /System/soul/identity.local.md
 /System/body/design.local.md
+/System/brain/RAM.md
+/System/brain/profiles/*
+!/System/brain/profiles/README.md
+!/System/brain/profiles/_index.md
+/System/brain/memory/episodic/*
+!/System/brain/memory/episodic/README.md
+!/System/brain/memory/episodic/_index.md
+/System/brain/memory/semantic/*
+!/System/brain/memory/semantic/README.md
+!/System/brain/memory/semantic/_index.md
+/System/brain/memory/procedural/*
+!/System/brain/memory/procedural/README.md
+!/System/brain/memory/procedural/_index.md
 
 # Editor, OS, and generated files
 .DS_Store

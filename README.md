@@ -1,18 +1,24 @@
 # Atheer Workspace
 
-**A file-first work-and-study workspace that helps developers bring their own
-context and working preferences to AI-assisted work.**
+**A generic, file-first edition of the AtheerOS architecture for developers
+who want to bring their own context and working preferences to AI-assisted
+work.**
 
 Status: v0.1, early foundation.
 
-Atheer organizes readable Markdown files so a file-capable AI agent in an IDE
-can consult relevant project, learning, and preference notes when you ask.
+Atheer Workspace includes generic equivalents of AtheerOS's soul, brain, body,
+hands, database, and profile areas. It organizes readable Markdown files so a
+file-capable AI agent in an IDE can consult relevant project, learning,
+knowledge, and preference notes when you ask. Its architecture is complete as
+a reusable file-based blueprint; it does not include the runtime services that
+would make an AI operating system execute automatically. See the
+[architecture map](docs/architecture.md).
 
 ```text
 atheer-workspace/
-├── System/       Agent guidance, preferences, workflows, and helper scripts
-├── Knowledge/    Reference notes and archived material
-├── Profile/      Developer work and study context
+├── System/       Soul, brain, body, and host integration boundaries
+├── Knowledge/    Database equivalent: active vault and archive
+├── Profile/      Optional work, study, identity, goals, life, finance context
 ├── examples/     Fictional data for retrieval exercises
 ├── docs/         Conventions, privacy, retrieval, and roadmap
 ├── evals/        Manual retrieval scenarios
@@ -64,14 +70,18 @@ check provider and organizational policies, and limit agent permissions.
 `.gitignore` helps avoid accidental Git tracking; it cannot stop an agent from
 reading files. See [the privacy guide](docs/privacy-and-safe-use.md).
 
-## The three areas
+## The three pillars and System layers
 
-- **System** explains how the agent should navigate and work. It includes
-  optional user preferences, Markdown workflows, and helper scripts.
-- **Knowledge** holds references that can be opened when relevant. It is not a
-  database engine or automatic search index.
-- **Profile** organizes the person's work, study, tools, skills, and goals.
-  Add only context you choose to expose to your AI tool.
+- **System** contains four layers: `soul/` (role and boundaries), `brain/`
+  (instructions, external profile exports, and optional memory tiers),
+  `body/` (workflows, scripts, templates, and tool registry), and `hands/`
+  (host integration boundary).
+- **Knowledge** is the Database equivalent, divided into an on-demand vault
+  and a deliberate archive. It is not a database engine or automatic search
+  index.
+- **Profile** offers optional work, study, identity, goals, life, and finance
+  areas. Add only context you choose to expose to your AI tool; sensitive
+  information should usually stay out.
 
 Start at [AGENTS.md](AGENTS.md), then follow the relevant
 [_index.md](./_index.md) navigation. See the
@@ -81,11 +91,10 @@ Start at [AGENTS.md](AGENTS.md), then follow the relevant
 
 1. Copy or fork this starter into a workspace you control.
 2. Read [AGENTS.md](AGENTS.md) and the [privacy guide](docs/privacy-and-safe-use.md).
-3. For local personalization, copy the generic templates to
-   `System/soul/identity.local.md`, `System/body/design.local.md`, and
-   `Profile/developer-profile.md`, then customize those copies. `.gitignore`
-   excludes these files and new work/study notes from Git by default, but does
-   not prevent agent access or guarantee privacy.
+3. For local personalization, copy only the templates you need into the
+   appropriate area of your own workspace.
+   `.gitignore` excludes common personal profile, memory, and override files
+   from Git by default, but does not prevent agent access or guarantee privacy.
 4. Open the folder in an agent/IDE that can access workspace files. If it does
    not load instructions automatically, ask it to read `AGENTS.md` and follow
    relevant indexes before acting.
@@ -111,17 +120,18 @@ personal wikis, but it does not implement a search or indexing service. See
 [retrieval and evidence](docs/retrieval-and-evidence.md) and
 [file conventions](docs/file-conventions.md).
 
-Use the templates under `Profile/templates/` for optional, non-sensitive
-context such as role, goals, technologies, self-described skill areas, and
-collaboration preferences. Use `System/body/design.local.md` for engineering
-and design preferences. The tracked [design.md](System/body/design.md) is a
-generic template; copy it to `design.local.md` before customizing. These are
-editable user guidance, not permanent facts or instructions every agent will
-automatically obey.
+Use templates under `Profile/templates/` only for context you choose to share.
+Each template explains its own privacy limits; finance and life context can be
+sensitive even when summarized. Use `System/body/design.local.md` for
+engineering and design preferences. The tracked
+[design.md](System/body/design.md) is a generic template; copy it to
+`design.local.md` before customizing. These are editable user guidance, not
+permanent facts or instructions every agent will automatically obey.
 
-An automated first-run interview, personal `start` / `go-offline` commands,
-adaptive memory, agent-specific integrations, and automatic script generation
-are **not implemented**. They are future possibilities described in
+An automated first-run interview, automatic profile writing, adaptive memory,
+executable agent integrations, and automatic script generation are **not
+implemented**. Session workflows are written procedures that must be invoked;
+memory tiers are storage conventions, not an automatic memory service. See
 [the roadmap](docs/roadmap.md).
 
 ## Scripts and release readiness

@@ -13,10 +13,15 @@ agent must be able to discover or be directed to the file.
 5. Test it with the agent/editor you intend to use and record host-specific
    requirements.
 
-Examples:
+## Core workflows
 
-- [Working on a development project](work-on-project.md)
-- [Planning a study session](plan-study-session.md)
+| Workflow | Use it when |
+|---|---|
+| [Start a work session](start-session.md) | Beginning a task and loading its relevant context |
+| [Prepare a context handoff](context-handoff.md) | Pausing, switching tools, or continuing elsewhere |
+| [Wrap up a session](wrap-up-session.md) | Summarizing completed work and next steps |
+| [Work on a development project](work-on-project.md) | Planning or progressing a project task |
+| [Plan a study session](plan-study-session.md) | Choosing a focused learning session |
 
 Keep procedures small and revise them when real use reveals ambiguity. Use
 fictional examples; never include credentials, private notes, or

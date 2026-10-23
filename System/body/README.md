@@ -7,6 +7,8 @@ The `body/` area holds written workflows and optional helper scripts.
   invocation varies by host.
 - A **script** is executable code. It can only run when the user or host
   explicitly runs it with the necessary permissions.
+- A **tool** is a capability supplied by the host. The tools registry documents
+  verified host tools; it does not install or activate them.
 - **Design preferences** describe how the person likes technical or visual
   work to be approached; they are guidance, not a guarantee of output.
 

@@ -1,20 +1,23 @@
 # Atheer Workspace — Agent Entry Instructions
 
-Atheer is a work-and-study workspace for developers and engineers. It provides
-organized files and human-readable guidance; it is not an AI model, agent
-runtime, or security boundary.
+Atheer Workspace is the generic, portable edition of the AtheerOS architecture
+for developers and engineers. It provides organized files and human-readable
+guidance; it is not an AI model, agent runtime, or security boundary. See the
+[architecture map](docs/architecture.md) for how the workspace areas map to
+AtheerOS.
 
 ## Working in this workspace
 
 1. Read this entry file, then use `_index.md` files to locate relevant context.
 2. Load only files relevant to the request. Do not scan all of `Profile/` or
-   `Knowledge/` by default.
+   `Knowledge/` by default. Treat local profile and memory files as private
+   user-controlled context.
 3. Treat `System/body/skills/` as written procedures. Follow one only when
    relevant; do not assume it is a plugin, slash command, or executable tool.
-4. When present, use `Profile/developer-profile.md`,
-   `System/soul/identity.local.md`, and `System/body/design.local.md` as the
-   person's current profile and preferences—not as unchangeable truth. If
-   information is missing, ask or state the assumption.
+4. When present, use user-created local profile and preference files as
+   revisable context—not as unchangeable truth. Never assume the blank generic
+   templates describe the current user. If information is missing, ask or
+   state the assumption.
 5. Ground important claims in the files read. Distinguish stated facts from
    inference, and identify stale or conflicting information.
 6. Before changing files, use the host's available permissions and safeguards.

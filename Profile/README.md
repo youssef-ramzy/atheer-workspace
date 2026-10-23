@@ -1,16 +1,22 @@
-# Profile — Work and Study Context
+# Profile — Optional User Context
 
-`Profile/` is the person's editable work-and-study context. Use it to make
-assistance more relevant, not to build a complete personal dossier.
+`Profile/` is optional, user-maintained context. Its areas mirror the breadth
+of AtheerOS Profile, but the starter contains no personal facts. Use only what
+is relevant to the assistance you want; this is not a request to build a full
+personal dossier.
 
-Possible context includes role, current tools and technologies, self-described
-skill areas, projects, study goals, and collaboration preferences. Record only
-what is useful and appropriate to make available to the chosen AI agent and
-provider. Do not add credentials, confidential client/employer details, or
-sensitive personal data by default.
+The optional areas are work, study, identity, goals, life context, and finance
+context. Record only information appropriate to make available to the chosen
+AI agent and provider. Do not add credentials, confidential client/employer
+details, financial account or identity numbers, or sensitive personal data by
+default.
 
 - [Work](work/README.md)
 - [Study](study/README.md)
+- [Identity](identity/README.md)
+- [Goals](goals/README.md)
+- [Life context](life/README.md)
+- [Finance context](finance/README.md)
 - [Profile templates](templates/README.md)
 
 Entries are user-maintained and may become stale. Ask before inferring or

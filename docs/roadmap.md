@@ -1,13 +1,15 @@
 # Product Roadmap
 
-Atheer's goal is to help developers and engineers use AI agents in work and
-study by giving them an understandable, personalized workspace. This roadmap
+Atheer Workspace's goal is to give developers and engineers a generic,
+understandable architecture for AI-assisted work and study. Personalization is
+optional and user-controlled. This roadmap
 separates the foundation that exists from future ideas. An item here is not an
 implemented feature or delivery promise.
 
 ## Foundation in this starter
 
-- Three-area structure: `System/`, `Knowledge/`, and `Profile/`.
+- AtheerOS-mapped structure: `System/` with soul, brain, body, and hands;
+  `Knowledge/` as the Database equivalent; and optional `Profile/` areas.
 - Cross-agent entry guidance for file-capable agents and IDEs, with host
   limitations stated explicitly.
 - Lightweight indexes, optional metadata, source/freshness guidance, and a
@@ -16,6 +18,9 @@ implemented feature or delivery promise.
 - Short example workflows, evaluation scenarios, and a read-only structural
   checker for supported links and metadata, ignored files, tracked local
   overrides, and stale notes.
+- Generic start-session, context-handoff, wrap-up, work, and study workflows;
+  blank RAM and memory templates; and separate episodic, semantic, and
+  procedural memory guidance.
 - Privacy and provider-boundary guidance.
 
 ## Later, only after the foundation is tested
@@ -24,9 +29,10 @@ implemented feature or delivery promise.
    role, goals, stack, current skill areas, and collaboration preferences.
    Preview the proposed profile, allow edits or skips, and write nothing until
    the person confirms. Do not ask for secrets or sensitive details by default.
-2. **Essential workflows:** host-appropriate `start` and `go-offline`
-   procedures. Make invocation, continuity, and storage behavior clear; never
-   write session history without consent.
+2. **Host-specific workflow adapters:** document how verified hosts discover
+   and invoke the existing start, handoff, and wrap-up procedures. Make
+   continuity and storage behavior clear; never write session history without
+   consent.
 3. **Personal working profile:** editable tech stack, tools, skill levels,
    learning goals, and preferred explanation/collaboration style. Treat entries
    as user-maintained context, not inferred truth.

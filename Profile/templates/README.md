@@ -9,6 +9,12 @@ and its provider. Remove fields that are not useful.
 - [Project](project.md) — scoped work goal and status
 - [Study plan](study-plan.md) — a learning goal and next step
 - [Reference note](reference-note.md) — source and freshness-aware knowledge
+- [Identity context](identity-context.md) — optional role and responsibilities
+- [Goals](goals.md) — current, paused, and completed goals
+- [Life context](life-context.md) — minimal task-relevant constraints
+- [Finance context](finance-context.md) — limited high-level context; sensitive data should stay out
 
-The first-use interview and automatic profile writing are not implemented.
-Adding personal data is currently a manual, user-controlled choice.
+These templates cover the optional Profile areas in AtheerOS. Sensitive
+categories are intentionally limited and should generally remain outside an
+AI-accessible workspace. The first-use interview and automatic profile writing
+are not implemented; adding personal data is a manual, user-controlled choice.

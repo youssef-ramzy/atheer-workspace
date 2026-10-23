@@ -1,8 +1,9 @@
 # Atheer Metadata and OKF v0.2
 
-This note compares Atheer's lightweight frontmatter conventions with the
-official [Open Knowledge Format v0.2 specification](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/04624f4fb69caadd7bead187ec467f111f80ad8b/okf/SPEC.md).
-The spec pinned here is v0.2; newer upstream versions have not been checked.
+This note compares Atheer Workspace's lightweight frontmatter conventions
+with the canonical [Open Knowledge Format specification](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md).
+The current specification is v0.2 (checked 2026-10-24); update this mapping if
+the canonical specification changes.
 It describes field semantics only. **Atheer does not claim OKF conformance or
 compatibility.**
 
