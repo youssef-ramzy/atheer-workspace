@@ -1,3 +1,7 @@
+# Privacy warning: Do not store identity numbers, account numbers, or sensitive
+# financial or health details here; anything an agent can read may reach its
+# provider.
+
 # Life Context
 
 Optional context for a specific kind of assistance. Leave sections blank when

@@ -1,3 +1,7 @@
+# Privacy warning: Do not store identity numbers, account numbers, or sensitive
+# financial or health details here; anything an agent can read may reach its
+# provider.
+
 # Limited Finance Context
 
 Optional and sensitive. Prefer not to store financial information in an
